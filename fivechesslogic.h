@@ -15,6 +15,8 @@ typedef struct Data {
 	int steps;
 }_fivechess;
 
+
+
 extern int* getData();
 
 extern void Initialize();
@@ -24,5 +26,5 @@ extern void Regret();
 
 
 
-extern int creatLine();
+extern int creatLine(int x,int y);
 

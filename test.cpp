@@ -24,7 +24,7 @@ int main()
 	}
 	printf("\n");
 	
-	r = creatLine();
+	r = creatLine(0,4);
 	if (r == BLACK)
 	{
 		printf("正常\n");
@@ -38,7 +38,7 @@ int main()
 	Go(8, 9); Go(2, 0);
 	Go(0, 10); Go(3,0);
 	Go(11, 11); Go(4, 0);
-	r = creatLine();
+	r = creatLine(4,0);
 	if (r == BLACK)
 	{
 		printf("正常\n");
@@ -52,7 +52,7 @@ int main()
 	Go(2, 2); Go(0, 2);
 	Go(1, 3); Go(5, 3);
 	Go(0, 4); 
-	r = creatLine();
+	r = creatLine(0,4);
 	if (r == WHITE)
 	{
 		printf("正常\n");
@@ -66,7 +66,7 @@ int main()
 	Go(16, 3); Go(0, 2);
 	Go(15, 4); Go(0, 3);
 	Go(14, 5); 
-	r = creatLine();
+	r = creatLine(14,5);
 	
 	if (r == WHITE)
 	{
@@ -81,7 +81,7 @@ int main()
 	Go(2, 3); Go(0, 2);
 	Go(3, 4); Go(0, 3);
 	Go(4, 5); 
-	r = creatLine();
+	r = creatLine(4,5);
 	if (r == WHITE)
 	{
 		printf("正常\n");
@@ -96,7 +96,7 @@ int main()
 	Go(2, 3); Go(0, 2);
 	Go(3, 4); Go(0, 3);
 	Go(4, 5); 
-	r = creatLine();
+	r = creatLine(4,5);
 	if (r == WHITE)
 	{
 		printf("正常\n");
