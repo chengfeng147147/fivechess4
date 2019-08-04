@@ -1,17 +1,17 @@
 
-#define Length 19
-#define Width  19
+#define LENGTH 19
+#define WIDTH  19
 #define EMPTY 0
 #define BLACK 1
 #define WHITE -1
 
 typedef struct Data {
-	int chess[Width][Length];
+	int chess[WIDTH][LENGTH];
 
 	struct Step {
 		int x;
 		int y;
-	}Rstep;
+	}step;
 	int steps;
 }_fivechess;
 
@@ -19,10 +19,10 @@ typedef struct Data {
 
 extern int* getData();
 
-extern void Initialize();
+extern void initialize();
 
-extern void Go(int a, int b);
-extern void Regret();
+extern void go(int x, int y);
+extern void regret();
 
 
 

@@ -1,43 +1,53 @@
-
+#include"stack.h"
 #include "fivechesslogic.h"
+
 int judgeLine(int* line, int length);
-int* Topright(int x, int y);
+
 _fivechess Fivechess;
+
 int* getData(){
 	return (int*) Fivechess.chess;
 }
 
-void Initialize()
+
+void initialize()
 {
-	for (int i = 0; i < 19; i++)
+	for (int x = 0; x < LENGTH; x++)
 	{
 
-		for (int j = 0; j < 19; j++)
+		for (int y = 0; y < LENGTH; y++)
 		{
-			Fivechess.chess[i][j] = 0;
+			Fivechess.chess[x][y] = 0;
 
 		}
 	}
 	Fivechess.steps = 1;
+	stack_init();
 }
-void Go(int a, int b)
+void go(int x, int y)
 {
-
+	Step step;
 	
-	if (Fivechess.chess[a][b] == 0)
+  if (Fivechess.chess[x][y] == 0)
 	{
-		Fivechess.chess[a][b] = Fivechess.steps % 2 == 0 ? 1 : -1;
-		Fivechess.Rstep.x = a;
-		Fivechess.Rstep.y = b;
-		Fivechess.steps++;
-	}
+	  step.x = x;
+	  step.y = y;
+	  step.colour = Fivechess.steps%2==0?1:-1;
+	  stack_push(&step);
+	  Fivechess.chess[x][y] = step.colour;
+	  Fivechess.steps++;
 	
-
+	}
 }
-void Regret()
+void regret()
 {
-	Fivechess.chess[Fivechess.Rstep.x][Fivechess.Rstep.y] = 0;
+	Step step;
+
+	stack_pop(&step);
+	Fivechess.chess[step.x][step.y] = 0;
 	Fivechess.steps--;
+	
+	
 }
 
 
@@ -46,16 +56,16 @@ int creatLine(int y,int x)
 {
 	int savex = x, savey = y;
 	int savechess,count=0,cutcount;
-	int Line[Length];
+	int Line[LENGTH];
 	
-	savechess = judgeLine(Fivechess.chess[y],Length);//判断行
+	savechess = judgeLine(Fivechess.chess[y], LENGTH);//判断行
 	if (savechess != EMPTY){ return savechess; }
-	for (int i = 0; i < Length; i++)//判断列
+	for (int i = 0; i < LENGTH; i++)//判断列
 	{
 		Line[count] = Fivechess.chess[i][x];
 		count++;
 	}
-	savechess = judgeLine(Line, Length);
+	savechess = judgeLine(Line, LENGTH);
 	if (savechess != EMPTY){ return savechess; }
 	
 	y += x;//左下右上，找到该点所在斜线的第一个点
@@ -86,13 +96,13 @@ int creatLine(int y,int x)
 	y = 0;
 	if (x >= 0)
 	{
-		count = Length - x;
+		count = LENGTH - x;
 		
 	}
 	else
 	{
 		cutcount = -x;
-		count = Length - cutcount;
+		count = LENGTH - cutcount;
 		y += cutcount;
 		x += cutcount;
 	}

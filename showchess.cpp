@@ -2,53 +2,42 @@
 #include "fivechesslogic.h"
 #include<stdio.h>
 
-void chessboardShow()
+void chessboardShow(int* data)
 {
-	int* data;
-	data = getData();
-	for (int i = 0; i < 19; i++){
+	/**/
+	for (int i = 0; i < LENGTH; i++){
 		printf("\n");
-		for (int j = 0; j < 19; j++){
+		for (int j = 0; j < WIDTH; j++){
 			if (*data == -1)
 			{
-				printf("o");
-				data++;
+				printf(" O");
+				
 			}
 			else if (*data == 1)
 			{
-				printf("x");
-				data++;
+				printf(" X");
+				
 			}
 			else
 			{
-				printf("*");
+				printf(" .");
+
 			}
+			data++;
 		}
 
 	}
 	
 }
-int* getchess()
-{
-	int p[2];
-	printf("\nÇëÊäÈëÆå×Ó×ø±ê\n");
-	
-	scanf("%d%d",p,p+1);
-	return p;
-}
-void judge(int savechess)
+void showWinner(int savechess)
 {
 	if (savechess == -1)
 	{
 		printf("°×Æå»ñÊ¤");
 		
-		Initialize();
-		chessboardShow();
 	}
 	if (savechess == 1)
 	{
 		printf("ºÚÆå»ñÊ¤");
-		Initialize();
-		chessboardShow();
 	}
 }

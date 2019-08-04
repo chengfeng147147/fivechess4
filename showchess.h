@@ -1,5 +1,5 @@
 
 
-void chessboardShow();
-int* getchess();
-void judge(int savechess);
+void chessboardShow(int* DATA);
+
+void showWinner(int winner);

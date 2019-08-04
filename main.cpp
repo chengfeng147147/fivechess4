@@ -5,19 +5,45 @@
 int main()
 {
 	
-	int savechess;
-	int* x;
-	int* y;//棋子坐标
-	Initialize();
-	chessboardShow();
+	int winner;
+	int x;
+	int y;//棋子坐标
+	int* data;
+	int restart = 1;
+	char stepBack='n';
+	
 	while (1)
 	{
-		y = getchess();
-		x = y + 1;
-		Go(*x, *y);
-		chessboardShow();
-		savechess=creatLine(*y, *x);
-		judge(savechess);
+		if (restart){
+			initialize();
+			data = getData();
+			chessboardShow(data);
+			restart = 0;
+		}
+		if (stepBack == 'n')
+
+		{
+			printf("\n请输入棋子坐标\n");
+			scanf("%d%d", &y, &x);
+			go(y, x);
+		}
+		
+		printf("是否悔棋，y/n?");
+		scanf("%c",&stepBack);
+		if (stepBack == 'y')
+		{
+			regret();
+		}
+		
+		data = getData();
+		chessboardShow(data);
+		winner=creatLine(y, x);
+		if (winner){
+			showWinner(winner);
+			restart = 1;
+		}
+	
+		
 	}
 	
 	
