@@ -2,7 +2,7 @@
 #include "fivechesslogic.h"
 #include<stdio.h>
 
-void chessboardShow(int* data)
+void chessboard_show(int* data)
 {
 	/**/
 	for (int i = 0; i < LENGTH; i++){
@@ -29,7 +29,7 @@ void chessboardShow(int* data)
 	}
 	
 }
-void showWinner(int savechess)
+void show_winner(int savechess)
 {
 	if (savechess == -1)
 	{

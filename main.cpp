@@ -19,7 +19,7 @@ int main()
 			initialize();
 			stack_initi();
 			data = get_data();
-			chessboardShow(data);
+			chessboard_show(data);
 			restart = 0;
 		}
 		if (stepBack == 'n')
@@ -38,10 +38,10 @@ int main()
 		}
 		
 		data = get_data();
-		chessboardShow(data);
+		chessboard_show(data);
 		winner=creat_line(y, x);
 		if (winner){
-			showWinner(winner);
+			show_winner(winner);
 			printf("ÊÇ·ñ¿ªÊ¼¸´ÅÌ£¿y/n");
 			scanf("%c", &recover);
 			if (recover == 'y'){
@@ -55,7 +55,7 @@ int main()
 				{
 					recover_chess();
 					data = get_data();
-					chessboardShow(data);
+					chessboard_show(data);
 
 				}
 			}
