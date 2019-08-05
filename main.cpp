@@ -11,12 +11,14 @@ int main()
 	int* data;
 	int restart = 1;
 	char stepBack='n';
-	
+	char recover = 'n';
+	char recover2 = 'n';
 	while (1)
 	{
 		if (restart){
 			initialize();
-			data = getData();
+			stack_initi();
+			data = get_data();
 			chessboardShow(data);
 			restart = 0;
 		}
@@ -35,11 +37,28 @@ int main()
 			regret();
 		}
 		
-		data = getData();
+		data = get_data();
 		chessboardShow(data);
-		winner=creatLine(y, x);
+		winner=creat_line(y, x);
 		if (winner){
 			showWinner(winner);
+			printf("是否开始复盘？y/n");
+			scanf("%c", &recover);
+			if (recover == 'y'){
+				initialize();
+			}
+			while (recover == 'y')
+			{
+				printf("是否继续复盘？y/n");
+				scanf("%c", &recover2);
+				if (recover2 == 'y')
+				{
+					recover_chess();
+					data = get_data();
+					chessboardShow(data);
+
+				}
+			}
 			restart = 1;
 		}
 	

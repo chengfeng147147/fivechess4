@@ -6,7 +6,10 @@ int main()
 {
 	int r = 0;
 	int* data;
+	char re = 'n';
+	char er = 'n';
 	initialize();
+	stack_initi();
 	go(1, 7);
 	regret(); go(2, 7);
 	
@@ -36,9 +39,28 @@ int main()
 	else{
 		printf("失败\n");
 	}
+	initialize();
+	printf("是否开始复盘?y/n");
+	scanf("%c",&re);
+	while (re=='y')
+	{
+		printf("是继续复盘?y/n");
+		scanf("%c", &er);
+		if (er=='y')
+		{
+			recover_chess();
+			data = getData();
+			for (int i = 0; i < 19; i++){
+				printf("\n");
+				for (int j = 0; j < 19; j++){
+					printf("%d", /*Fivechess.chess[i][j]*/*data);
+					data++;
+				}
+			}
+		}
+	}
+			system("pause");
+
+			return 0;
+		}
 	
-	
-	system("pause");
-	
-	return 0;
-}

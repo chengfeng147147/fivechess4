@@ -17,14 +17,14 @@ typedef struct Data {
 
 
 
-extern int* getData();
+extern int* get_data();
 
 extern void initialize();
-
+extern void stack_initi();
 extern void go(int x, int y);
 extern void regret();
 
+extern void recover_chess();
 
-
-extern int creatLine(int x,int y);
+extern int creat_line(int x,int y);
 

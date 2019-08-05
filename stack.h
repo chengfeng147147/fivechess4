@@ -8,3 +8,4 @@ typedef struct step{
 void stack_init();
 void stack_push(Step* step);
 void stack_pop(Step* step);
+void stack_firstpop(Step* step);

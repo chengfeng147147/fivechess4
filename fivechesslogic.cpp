@@ -1,14 +1,16 @@
 #include"stack.h"
 #include "fivechesslogic.h"
 
-int judgeLine(int* line, int length);
+int judge_line(int* line, int length);
 
 _fivechess Fivechess;
 
-int* getData(){
+int* get_data(){
 	return (int*) Fivechess.chess;
 }
-
+void stack_initi() {
+	stack_init();
+}
 
 void initialize()
 {
@@ -22,7 +24,7 @@ void initialize()
 		}
 	}
 	Fivechess.steps = 1;
-	stack_init();
+	
 }
 void go(int x, int y)
 {
@@ -52,20 +54,20 @@ void regret()
 
 
 
-int creatLine(int y,int x)
+int creat_line(int y,int x)
 {
 	int savex = x, savey = y;
 	int savechess,count=0,cutcount;
-	int Line[LENGTH];
+	int line[LENGTH];
 	
-	savechess = judgeLine(Fivechess.chess[y], LENGTH);//判断行
+	savechess = judge_line(Fivechess.chess[y], LENGTH);//判断行
 	if (savechess != EMPTY){ return savechess; }
 	for (int i = 0; i < LENGTH; i++)//判断列
 	{
-		Line[count] = Fivechess.chess[i][x];
+		line[count] = Fivechess.chess[i][x];
 		count++;
 	}
-	savechess = judgeLine(Line, LENGTH);
+	savechess = judge_line(line, LENGTH);
 	if (savechess != EMPTY){ return savechess; }
 	
 	y += x;//左下右上，找到该点所在斜线的第一个点
@@ -83,10 +85,10 @@ int creatLine(int y,int x)
 	}
 	for (int i = 0; i < count; i++)
 	{
-		Line[i] = Fivechess.chess[y][x];
+		line[i] = Fivechess.chess[y][x];
 		y--; x++;
 	}
-	savechess = judgeLine(Line, count);
+	savechess = judge_line(line, count);
 	if (savechess != EMPTY){
 		return savechess;
 	}
@@ -108,41 +110,46 @@ int creatLine(int y,int x)
 	}
 	for (int i = 0; i < count;i++)
 	{
-		Line[i] = Fivechess.chess[y][x];
+		line[i] = Fivechess.chess[y][x];
 		y++;
 		x++;
 	}
-	savechess = judgeLine(Line, count);
+	savechess = judge_line(line, count);
 	if (savechess != EMPTY){
 		return savechess;
 	}
 	return EMPTY;
 }
 
-int judgeLine(int* line, int length){
-	int saveChess = EMPTY;
+int judge_line(int* line, int length){
+	int savechess = EMPTY;
 	int count = 0;
-	int currentChess = EMPTY;
+	int currentchess = EMPTY;
 
 	for (int i = length; i > 0; i--){
-		currentChess = *line;
+		currentchess = *line;
 		line++;
-		if (currentChess == EMPTY){
-			saveChess = EMPTY;
+		if (currentchess == EMPTY){
+			savechess = EMPTY;
 			count = 0;
 		}
-		else if (currentChess == saveChess){
+		else if (currentchess == savechess){
 			count++;
 		}
 		else {
 			count = 1;
-			saveChess = currentChess;
+			savechess = currentchess;
 		}
 
 		if (count == 5) {
-			return currentChess;
+			return currentchess;
 		}
 	}
 	return EMPTY;
 }
-
+void recover_chess()
+{
+	Step step;
+	stack_firstpop( &step);
+	Fivechess.chess[step.x][step.y] = step.colour;
+}
