@@ -2,4 +2,4 @@
 
 void chessboard_show(int* DATA);
 
-void show_winner(int winner);
+void show_winnern(int winner);

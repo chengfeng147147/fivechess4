@@ -1,3 +1,4 @@
+
 #define MAXCOUNT 361
 typedef struct step{
 
@@ -5,7 +6,8 @@ typedef struct step{
 	int y;
 	int colour;
 }Step;
+void firstpointer_init();
 void stack_init();
-void stack_push(Step* step);
-void stack_pop(Step* step);
-void stack_firstpop(Step* step);
+int stack_push(Step* step);
+int stack_pop(Step* step);
+int stack_firstpop(Step* step);

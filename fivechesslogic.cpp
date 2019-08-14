@@ -1,13 +1,27 @@
+#include<stdio.h>
+#include<time.h>
+#include<string.h>
 #include"stack.h"
 #include "fivechesslogic.h"
+#include<stdlib.h>
+//#include"link.h"
 
 int judge_line(int* line, int length);
+typedef struct filedata{
+	int length;
+	char playername[10];
+	char playername2[10];
+	int time[6];
+	Step step[MAXCOUNT];
 
+}Filedata;
 _fivechess Fivechess;
+
 
 int* get_data(){
 	return (int*) Fivechess.chess;
 }
+
 void stack_initi() {
 	stack_init();
 }
@@ -26,7 +40,7 @@ void initialize()
 	Fivechess.steps = 1;
 	
 }
-void go(int x, int y)
+int go(int x, int y)
 {
 	Step step;
 	
@@ -38,14 +52,18 @@ void go(int x, int y)
 	  stack_push(&step);
 	  Fivechess.chess[x][y] = step.colour;
 	  Fivechess.steps++;
-	
+	  return 1;
 	}
+  return 0;
 }
-void regret()
+void regret(int *px,int *py,int* colour)
 {
 	Step step;
 
 	stack_pop(&step);
+	*px = step.x;
+	*py = step.y;
+	*colour = step.colour;
 	Fivechess.chess[step.x][step.y] = 0;
 	Fivechess.steps--;
 	
@@ -54,7 +72,7 @@ void regret()
 
 
 
-int creat_line(int y,int x)
+int get_winner(int y, int x)
 {
 	int savex = x, savey = y;
 	int savechess,count=0,cutcount;
@@ -147,9 +165,161 @@ int judge_line(int* line, int length){
 	}
 	return EMPTY;
 }
-void recover_chess()
+void recover_chess(int*x,int*y,int*colour)
 {
 	Step step;
 	stack_firstpop( &step);
 	Fivechess.chess[step.x][step.y] = step.colour;
+	*x = step.x;
+	*y = step.y;
+	*colour = step.colour;
+	
+}
+void get_time(int* timepp)
+
+   {          time_t timep;
+				 tm *p;
+			time(&timep);
+			p = gmtime(&timep);
+			
+			*(timepp + 5) = p->tm_sec;
+			*(timepp + 4)=p->tm_min; /*获取当前分*/
+			*(timepp+3)= 8 + p->tm_hour;/*获取当前时,这里获取西方的时间,刚好相差八个小时*/
+			*(timepp+2)= p->tm_mday;/*获取当前月份日数,范围是1-31*/
+			*(timepp +1)= 1 + p->tm_mon;/*获取当前月份,范围是0-11,所以要加1*/
+			*timepp=1900 + p->tm_year;/*获取当前年份,从1900开始，所以要加1900*/
+   }
+void write_file(  int* timep, char* playname, char* playname2)
+{
+	FILE *fp;
+	Step step;
+	Filedata filedata;
+	filedata.length = Fivechess.steps*sizeof(int)*3+6*sizeof(int)+2*STRING;
+	strcpy(filedata.playername ,playname);
+	strcpy(filedata.playername2 , playname2);
+	for (int i = 0; i < 6; i++){
+		filedata.time[i] = *timep;
+		timep++;
+    }
+	for (int i = 0; i < Fivechess.steps;i++)
+	{
+		stack_firstpop(&step);
+		filedata.step[i].colour = step.colour;
+		filedata.step[i].x = step.x;
+		filedata.step[i].y= step.y;
+	}
+	firstpointer_init();
+	fp = fopen("../chessmanual.bin", "ab");
+	fseek(fp, 0, SEEK_END);
+	fwrite(&filedata, filedata.length , 1, fp);
+	fclose(fp);
+}
+
+void read_file(Link*link)
+{
+	FILE* fp;
+	int offset1 = 0;
+	int offset2 = 0;
+	char userblack[10];
+	char userwhite[10];
+	int judge=1;
+	int time[6];
+	fp = fopen("../chessmanual.bin", "r");
+	while (judge!=0)
+	{
+		
+		offset2 = offset1;
+		
+		fseek(fp, offset1 + sizeof(int), SEEK_SET);
+		fread(userblack, sizeof(char[10]), 1, fp);
+		fseek(fp, offset1 + sizeof(int)+sizeof(char[10]), SEEK_SET);
+		fread(userwhite, sizeof(char[10]), 1, fp);
+		fseek(fp, offset1 + sizeof(int)+sizeof(char[10]) + sizeof(char[10]), SEEK_SET);
+		fread(time, sizeof(int[6]), 1, fp);
+		link_append(link, userblack, userwhite, time, &offset1);
+		fseek(fp, offset1, SEEK_SET);
+		judge=fread(&offset1, sizeof(int), 1, fp);
+		offset1 += offset2;
+	}
+	fclose(fp);
+}
+rLink*find_chessmanual(Link*link, char* userblack, char*userwhite, int* time){
+	LinkNode* linknode;
+	FILE* fp;
+	rLink*rlink;
+	int offset;
+	int offset1;
+	int steps;
+	int chessdata[3];
+
+	linknode=link_find(link, userblack, userwhite, time);
+	if (linknode == NULL){
+		return NULL;
+	}
+	offset=linknode->offset;
+	fp = fopen("../chessmanual.bin", "r");
+	fseek(fp, offset, SEEK_SET);
+	
+	fread(&offset1, sizeof(int), 1, fp);
+	steps = offset1 - (sizeof(int)+sizeof(char[10]) * 2 + sizeof(int[6]));
+	steps = steps/12;
+	rlink = rlink_init();
+	for (int i = 0; i < steps; i++)
+	{
+		fseek(fp, offset + sizeof(int)+sizeof(char[10]) * 2 + sizeof(int[6]) + i * 3*(sizeof(int)), SEEK_SET);
+		fread(chessdata, sizeof(int), 3, fp);
+		
+		Fivechess.chess[chessdata[0]][chessdata[1]] = chessdata[2];
+		rlink_append(rlink, chessdata, &chessdata[1], &chessdata[2]);	
+	}
+	fclose(fp);
+	return rlink;
+}
+
+int rlink_append(rLink*rlink,int*x,int*y,int*colour)
+{
+	LinkfileNode* linkfilenode;
+	linkfilenode = (LinkfileNode*)malloc(sizeof(LinkfileNode));
+	if (linkfilenode == NULL){
+		return 0;
+	}
+	linkfilenode->sstep.colour = *colour;
+	linkfilenode->sstep.x = *x;
+	linkfilenode->sstep.y = *y;
+	linkfilenode->next = NULL;
+	if (rlink->head == NULL){
+		rlink->head = linkfilenode;
+		rlink->tail = linkfilenode;
+	}
+	else{
+		rlink->tail->next = linkfilenode;
+		rlink->tail = rlink->tail->next;
+	}
+	return 1;
+
+}
+int get_rlinkfirst(rLink*rlink,int*x, int*y, int*colour)
+{
+	if (rlink->head != NULL)
+	{
+		*x = rlink->head->sstep.x;
+		*y = rlink->head->sstep.y;
+		*colour = rlink->head->sstep.colour;
+		
+		rlink->head = rlink->head->next;
+		return 1;
+	}
+	else
+	{ 
+		return 0; 
+	}
+	
+}
+rLink* rlink_init()
+{
+	rLink* rlink;
+	rlink = (rLink*)malloc(sizeof(rLink));
+	rlink->head = NULL;
+	rlink->tail = NULL;
+	return rlink;
 }

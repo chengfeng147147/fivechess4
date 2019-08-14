@@ -1,30 +1,52 @@
 
+#include"link.h"
+
 #define LENGTH 19
 #define WIDTH  19
 #define EMPTY 0
 #define BLACK 1
 #define WHITE -1
+#define STRING 10
 
 typedef struct Data {
 	int chess[WIDTH][LENGTH];
 
-	struct Step {
-		int x;
-		int y;
-	}step;
+	
 	int steps;
 }_fivechess;
+typedef struct SStep{
+	int x;
+	int y;
+	int colour;
+};
+typedef struct SStep sstep;
+typedef struct _LinkfileNode{
+	SStep sstep;
+	struct _LinkfileNode* next;
 
+};
+typedef struct _LinkfileNode LinkfileNode;
 
-
+typedef struct _rLink{
+	LinkfileNode* head;
+	LinkfileNode* tail;
+};
+typedef struct _rLink rLink;
 extern int* get_data();
 
 extern void initialize();
 extern void stack_initi();
-extern void go(int x, int y);
-extern void regret();
+extern int go(int x, int y);
+extern void regret(int* px,int* py,int* colour);
 
-extern void recover_chess();
+extern void recover_chess(int*x, int*y, int*colour);
 
-extern int creat_line(int x,int y);
+extern int get_winner(int x,int y);
 
+extern void write_file(int*time, char* playname, char* playname2);
+extern void get_time(int* timepp);
+extern void read_file(Link*link);
+extern rLink* find_chessmanual(Link*link, char* userblack, char*userwhite, int* time);
+extern int rlink_append(rLink*rlink, int*x, int*y, int*colour);
+extern int get_rlinkfirst(rLink*rlink, int*x, int*y, int*colour);
+extern rLink* rlink_init();

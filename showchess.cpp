@@ -29,7 +29,7 @@ void chessboard_show(int* data)
 	}
 	
 }
-void show_winner(int savechess)
+void show_winnern(int savechess)
 {
 	if (savechess == -1)
 	{
