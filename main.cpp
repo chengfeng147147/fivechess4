@@ -6,7 +6,7 @@
 #include"imageshow.h"
 #include<synchapi.h>
 #include"stack.h"
-
+#include"bitree.h"
 #define PLAY 1
 #define REPLAY 2
 int main()
@@ -21,15 +21,16 @@ int main()
 	int steps=1;
 	int colour;
 	int rcolour;
-	int timep[6];
-	int time[6];
+	
 	int judge;
-	Link *link;
+	BiTree*bitree;
 	rLink *rlink;
 	int data[361];
 	int find=1;
 	int status = PLAY;
 	int end = FALSE;
+
+	
 	
 	while (1)
 	{
@@ -42,7 +43,8 @@ int main()
 			restart = 0;
 			steps = 1;
 			get_username(player1, player2);
-			get_time(timep);
+			
+			
 		}
 		
 		judge =get_mouse(&px, &py);
@@ -75,17 +77,19 @@ int main()
 				else{
 					restart = 1;
 					status = PLAY;
+					rlink_destruct(rlink);
 				}
 				end = !end;
 			}
 			else{
 				game_background();
-				link = link_init();
-				read_file(link);
+				
+				bitree=biTree_init();
+				read_file(bitree);
 				get_username(userblack, userwhite);
-				get_timeshow(time);
+				
 				rlink = rlink_init();
-				rlink = find_chessmanual(link, userblack, userwhite, timep);
+				rlink = find_chessmanual(bitree, userblack, userwhite);
 				status = REPLAY;
 			}
 		default:
@@ -97,7 +101,7 @@ int main()
 			if (winner)
 			{
 				show_winner(winner);
-				write_file(timep, player1, player2);
+				write_file( player1, player2);
 				Sleep(3000);
 				restart = 1;
 				end = TRUE;

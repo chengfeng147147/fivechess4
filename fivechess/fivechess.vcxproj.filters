@@ -33,6 +33,9 @@
     <ClCompile Include="..\imageshow.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\bitree.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\fivechesslogic.h">
@@ -48,6 +51,9 @@
       <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="..\imageshow.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bitree.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

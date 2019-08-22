@@ -4,6 +4,7 @@
 #include"stack.h"
 #include "fivechesslogic.h"
 #include<stdlib.h>
+#include"bitree.h"
 //#include"link.h"
 
 int judge_line(int* line, int length);
@@ -189,17 +190,23 @@ void get_time(int* timepp)
 			*(timepp +1)= 1 + p->tm_mon;/*获取当前月份,范围是0-11,所以要加1*/
 			*timepp=1900 + p->tm_year;/*获取当前年份,从1900开始，所以要加1900*/
    }
-void write_file(  int* timep, char* playname, char* playname2)
+void write_file(   char* playname, char* playname2)
 {
+	
+
 	FILE *fp;
 	Step step;
 	Filedata filedata;
+	
 	filedata.length = Fivechess.steps*sizeof(int)*3+6*sizeof(int)+2*STRING;
 	strcpy(filedata.playername ,playname);
 	strcpy(filedata.playername2 , playname2);
+
+	
+
 	for (int i = 0; i < 6; i++){
-		filedata.time[i] = *timep;
-		timep++;
+		filedata.time[i] = 9;
+		
     }
 	for (int i = 0; i < Fivechess.steps;i++)
 	{
@@ -209,13 +216,13 @@ void write_file(  int* timep, char* playname, char* playname2)
 		filedata.step[i].y= step.y;
 	}
 	firstpointer_init();
-	fp = fopen("../chessmanual.bin", "ab");
+	fp = fopen("../chessmanual.bin", "wb");
 	fseek(fp, 0, SEEK_END);
 	fwrite(&filedata, filedata.length , 1, fp);
 	fclose(fp);
 }
 
-void read_file(Link*link)
+void read_file( BiTree*bitree)
 {
 	FILE* fp;
 	int offset1 = 0;
@@ -236,27 +243,33 @@ void read_file(Link*link)
 		fread(userwhite, sizeof(char[10]), 1, fp);
 		fseek(fp, offset1 + sizeof(int)+sizeof(char[10]) + sizeof(char[10]), SEEK_SET);
 		fread(time, sizeof(int[6]), 1, fp);
-		link_append(link, userblack, userwhite, time, &offset1);
+		curNode_init(bitree);
+		bitree_append(bitree, userblack, userwhite, &offset1);
+		
+		fseek(fp, offset1, SEEK_SET);
+		fread(&offset1, sizeof(int), 1, fp);
+		offset1 += offset2;
 		fseek(fp, offset1, SEEK_SET);
 		judge=fread(&offset1, sizeof(int), 1, fp);
-		offset1 += offset2;
+		
 	}
 	fclose(fp);
 }
-rLink*find_chessmanual(Link*link, char* userblack, char*userwhite, int* time){
-	LinkNode* linknode;
+rLink*find_chessmanual( BiTree*bitree, char* userblack, char*userwhite){
+	
 	FILE* fp;
 	rLink*rlink;
+	BiTNode*bitnode;
 	int offset;
 	int offset1;
 	int steps;
 	int chessdata[3];
-
-	linknode=link_find(link, userblack, userwhite, time);
-	if (linknode == NULL){
+	bitnode = BiNode_find(bitree, userblack, userwhite);
+	
+	if (bitnode == NULL){
 		return NULL;
 	}
-	offset=linknode->offset;
+	offset= bitnode->offset;
 	fp = fopen("../chessmanual.bin", "r");
 	fseek(fp, offset, SEEK_SET);
 	
@@ -322,4 +335,16 @@ rLink* rlink_init()
 	rlink->head = NULL;
 	rlink->tail = NULL;
 	return rlink;
+}
+void rlink_destruct(rLink* rlink){
+	LinkfileNode* rlinknode, *rnextnode;
+
+	rlinknode = rlink->head;
+	while (rlinknode != NULL)
+	{
+		rnextnode = rlinknode->next;
+		free(rlinknode);
+		rlinknode = rnextnode;
+	}
+	free(rlink);
 }

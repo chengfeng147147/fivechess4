@@ -9,7 +9,7 @@ Link* link_init()
 	link->tail = NULL;
 	return link;
 }
-int link_append(Link* link, char* userblack, char*userwhite, int* time,int* offset)
+int link_append(Link* link, char* userblack, char*userwhite,int* offset)
 {
 	LinkNode* linknode;
 	linknode = (LinkNode*)malloc(sizeof(LinkNode));
@@ -18,11 +18,7 @@ int link_append(Link* link, char* userblack, char*userwhite, int* time,int* offs
 	}
 	strncpy(linknode->userblack, userblack,10);
 	strncpy(linknode->userwhite, userwhite,10);
-	for (int i = 0; i < 6; i++)
-	{
-		linknode->time[i] = *time;
-		time++;
-	}
+	
 	linknode->offset = *offset;
 	linknode->next = NULL;
 	if (link->head == NULL){

@@ -1,6 +1,6 @@
 
 #include"link.h"
-
+#include"bitree.h"
 #define LENGTH 19
 #define WIDTH  19
 #define EMPTY 0
@@ -43,10 +43,10 @@ extern void recover_chess(int*x, int*y, int*colour);
 
 extern int get_winner(int x,int y);
 
-extern void write_file(int*time, char* playname, char* playname2);
-extern void get_time(int* timepp);
-extern void read_file(Link*link);
-extern rLink* find_chessmanual(Link*link, char* userblack, char*userwhite, int* time);
+extern void write_file( char* playname, char* playname2);
+extern void read_file(BiTree*bitree);
+extern rLink*find_chessmanual(BiTree*bitree, char* userblack, char*userwhite);
 extern int rlink_append(rLink*rlink, int*x, int*y, int*colour);
 extern int get_rlinkfirst(rLink*rlink, int*x, int*y, int*colour);
 extern rLink* rlink_init();
+extern void rlink_destruct(rLink* rlink)

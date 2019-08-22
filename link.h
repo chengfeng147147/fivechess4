@@ -16,7 +16,7 @@ typedef struct _LinkNode LinkNode;
 };
 typedef struct _Link Link;
 extern Link* link_init();
-extern int link_append(Link* link, char* userblack, char*userwhite, int* time,int* offset);
+extern int link_append(Link* link, char* userblack, char*userwhite, int* offset);
 extern LinkNode* link_find(Link* link, char* userblack, char* userwhite, int* time);
 extern void link_destruct(Link* link);
 #endif

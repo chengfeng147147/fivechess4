@@ -6,8 +6,8 @@ typedef struct step{
 	int y;
 	int colour;
 }Step;
-void firstpointer_init();
-void stack_init();
-int stack_push(Step* step);
-int stack_pop(Step* step);
-int stack_firstpop(Step* step);
+extern void firstpointer_init();
+extern void stack_init();
+extern int stack_push(Step* step);
+extern int stack_pop(Step* step);
+extern int stack_firstpop(Step* step);

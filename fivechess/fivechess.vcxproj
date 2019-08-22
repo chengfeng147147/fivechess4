@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\bitree.cpp" />
     <ClCompile Include="..\fivechesslogic.cpp" />
     <ClCompile Include="..\imageshow.cpp" />
     <ClCompile Include="..\link.cpp" />
@@ -84,6 +85,7 @@
     <ClCompile Include="..\stack.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\bitree.h" />
     <ClInclude Include="..\fivechesslogic.h" />
     <ClInclude Include="..\imageshow.h" />
     <ClInclude Include="..\link.h" />
