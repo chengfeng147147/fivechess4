@@ -7,6 +7,8 @@
 #include<synchapi.h>
 #include"stack.h"
 #include"bitree.h"
+
+
 #define PLAY 1
 #define REPLAY 2
 int main()
@@ -78,16 +80,17 @@ int main()
 					restart = 1;
 					status = PLAY;
 					rlink_destruct(rlink);
+					bitree_destruct(bitree);
 				}
 				end = !end;
 			}
 			else{
 				game_background();
 				
-				bitree=biTree_init();
-				read_file(bitree);
+				bitree = biTree_init(sizeof(char[10]),char_cmpfunc);
+				bitree=read_file(bitree);
+
 				get_username(userblack, userwhite);
-				
 				rlink = rlink_init();
 				rlink = find_chessmanual(bitree, userblack, userwhite);
 				status = REPLAY;

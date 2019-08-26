@@ -44,9 +44,9 @@ extern void recover_chess(int*x, int*y, int*colour);
 extern int get_winner(int x,int y);
 
 extern void write_file( char* playname, char* playname2);
-extern void read_file(BiTree*bitree);
+extern BiTree* read_file(BiTree*bitree);
 extern rLink*find_chessmanual(BiTree*bitree, char* userblack, char*userwhite);
 extern int rlink_append(rLink*rlink, int*x, int*y, int*colour);
 extern int get_rlinkfirst(rLink*rlink, int*x, int*y, int*colour);
 extern rLink* rlink_init();
-extern void rlink_destruct(rLink* rlink)
+extern void rlink_destruct(rLink* rlink);

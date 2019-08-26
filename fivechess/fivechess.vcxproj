@@ -81,7 +81,6 @@
     <ClCompile Include="..\imageshow.cpp" />
     <ClCompile Include="..\link.cpp" />
     <ClCompile Include="..\main.cpp" />
-    <ClCompile Include="..\showchess.cpp" />
     <ClCompile Include="..\stack.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -89,7 +88,6 @@
     <ClInclude Include="..\fivechesslogic.h" />
     <ClInclude Include="..\imageshow.h" />
     <ClInclude Include="..\link.h" />
-    <ClInclude Include="..\showchess.h" />
     <ClInclude Include="..\stack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

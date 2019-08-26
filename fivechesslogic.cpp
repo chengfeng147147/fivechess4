@@ -6,7 +6,6 @@
 #include<stdlib.h>
 #include"bitree.h"
 //#include"link.h"
-
 int judge_line(int* line, int length);
 typedef struct filedata{
 	int length;
@@ -222,13 +221,13 @@ void write_file(   char* playname, char* playname2)
 	fclose(fp);
 }
 
-void read_file( BiTree*bitree)
+BiTree* read_file(BiTree*bitree)
 {
 	FILE* fp;
 	int offset1 = 0;
 	int offset2 = 0;
-	char userblack[10];
-	char userwhite[10];
+	char user1[10];
+	char user2[10];
 	int judge=1;
 	int time[6];
 	fp = fopen("../chessmanual.bin", "r");
@@ -238,13 +237,13 @@ void read_file( BiTree*bitree)
 		offset2 = offset1;
 		
 		fseek(fp, offset1 + sizeof(int), SEEK_SET);
-		fread(userblack, sizeof(char[10]), 1, fp);
+		fread(user1, sizeof(char[10]), 1, fp);
 		fseek(fp, offset1 + sizeof(int)+sizeof(char[10]), SEEK_SET);
-		fread(userwhite, sizeof(char[10]), 1, fp);
+		fread(user1, sizeof(char[10]), 1, fp);
 		fseek(fp, offset1 + sizeof(int)+sizeof(char[10]) + sizeof(char[10]), SEEK_SET);
 		fread(time, sizeof(int[6]), 1, fp);
 		curNode_init(bitree);
-		bitree_append(bitree, userblack, userwhite, &offset1);
+		bitree_append(bitree, &offset1, user1,char_cmpfunc);
 		
 		fseek(fp, offset1, SEEK_SET);
 		fread(&offset1, sizeof(int), 1, fp);
@@ -254,6 +253,7 @@ void read_file( BiTree*bitree)
 		
 	}
 	fclose(fp);
+	return bitree;
 }
 rLink*find_chessmanual( BiTree*bitree, char* userblack, char*userwhite){
 	
@@ -264,7 +264,8 @@ rLink*find_chessmanual( BiTree*bitree, char* userblack, char*userwhite){
 	int offset1;
 	int steps;
 	int chessdata[3];
-	bitnode = BiNode_find(bitree, userblack, userwhite);
+	curNode_init(bitree);
+	bitnode = BiNode_find(bitree, userblack,char_cmpfunc);
 	
 	if (bitnode == NULL){
 		return NULL;

@@ -4,22 +4,26 @@
 #ifndef _BITREE_H
 #define _BITREE_H
 #define NULL 0
+typedef int (cmp_f)(void*p, void*q);
 typedef struct _biTNode{
 
-	char userblack[10],userwhite[10];
+	void *p;
 	int offset;
-	_biTNode *lchild, *rchild,*mchild;
+	_biTNode *lchild, *rchild, *mchild;
 
 };
 typedef struct _biTNode BiTNode;
 typedef struct _biTree{
-	
+	int length;
+	cmp_f*cmp;
 	BiTNode*parentNode;
 	BiTNode*curNode;
 };
 typedef struct _biTree BiTree;
-extern BiTree*biTree_init();
+extern int char_cmpfunc(void*p, void*q);
+extern BiTree*biTree_init(int length, cmp_f cmp);
 extern void curNode_init(BiTree*bitree);
-extern int bitree_append(BiTree*bitree, char*userblack, char*userwhite, int*offset);
-extern BiTNode* BiNode_find(BiTree*bitree, char*userblack, char*userwhite);
+extern int bitree_append(BiTree*bitree, int*offset, void*p, cmp_f cmp);
+extern BiTNode* BiNode_find(BiTree*bitree, void*p, cmp_f cmp);
+extern void bitree_destruct(BiTree* bitree);
 #endif
